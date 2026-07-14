@@ -1,5 +1,11 @@
 import type { Metadata } from "next";
+import { Outfit } from "next/font/google";
 import "./globals.css";
+
+const outfit = Outfit({
+  subsets: ["latin"],
+  variable: "--font-outfit",
+});
 
 export const metadata: Metadata = {
   title: "Interview Prep Tracker",
@@ -13,10 +19,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="h-full antialiased">
-      <body className="flex min-h-full flex-col bg-gray-50 text-gray-900">
-        {children}
-      </body>
+    <html lang="en" className={`${outfit.variable} h-full antialiased`}>
+      <body className="flex min-h-full flex-col">{children}</body>
     </html>
   );
 }

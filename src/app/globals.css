@@ -1,17 +1,41 @@
 @import "tailwindcss";
 
-:root {
-  --background: #f9fafb;
-  --foreground: #171717;
+/* Design tokens — Interview Prep Tracker */
+@theme {
+  /* Brand teal — anchored on #00896f at shade 600 */
+  --color-primary-50: #edf6f4;
+  --color-primary-100: #d8ebe7;
+  --color-primary-200: #b2dbd3;
+  --color-primary-300: #8ccabd;
+  --color-primary-400: #66b8a9;
+  --color-primary-500: #33a18f;
+  --color-primary-600: #00896f;
+  --color-primary-700: #00745e;
+  --color-primary-800: #00604e;
+  --color-primary-900: #004b3d;
+  --color-primary-950: #00372c;
+
+  /* Semantic colors — statuses, badges, alerts */
+  --color-success: #15803d;
+  --color-success-bg: #dcfce7;
+  --color-warning: #b45309;
+  --color-warning-bg: #fef3c7;
+  --color-danger: #b91c1c;
+  --color-danger-bg: #fee2e2;
+  --color-info: #1d4ed8;
+  --color-info-bg: #dbeafe;
+
+  /* Surfaces */
+  --color-background: #f5f7f6;
+  --color-surface: #ffffff;
+  --color-foreground: #1a1f1d;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --font-sans: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-background);
+  color: var(--color-foreground);
 }

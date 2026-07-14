@@ -11,6 +11,14 @@ Postgres. Product spec: [`requirement/PRD.md`](requirement/PRD.md).
 - **@supabase/ssr** — server/client auth helpers
 - Hosting: Vercel / Netlify (free tier)
 
+## Design
+
+- **Font:** Outfit (`next/font/google`)
+- **Primary:** `#00896f` teal, full 50–950 shade scale → `primary-*` utilities (brand color sits at `primary-600`)
+- **Semantic:** `success` / `warning` / `danger` / `info` with matching `*-bg` tints — for statuses and badges
+- **Surfaces:** `background` `#f5f7f6`, `surface` white, `foreground` `#1a1f1d`
+- Tokens are defined in `src/app/globals.css` via Tailwind 4 `@theme`; reusable primitives live in `src/components/ui/` (Button, Input, Textarea, Select, Badge, Card, Spinner, EmptyState)
+
 ## Getting started
 
 ```bash
@@ -78,9 +86,10 @@ supabase/
 ```
 
 **Implemented (M1):** email/password auth, session persistence, protected
-routes, login/logout, dashboard shell. Remaining feature files contain TODO
-stubs following the PRD milestones (M2 core CRUD → M3 prep modules → M4
-reminders/polish → M5 delivery).
+routes, login/logout, dashboard shell with sidebar (desktop) + bottom tab bar
+(mobile), design tokens, and core UI primitives. Remaining feature files
+contain TODO stubs following the PRD milestones (M2 core CRUD → M3 prep
+modules → M4 reminders/polish → M5 delivery).
 
 ## Scripts
 

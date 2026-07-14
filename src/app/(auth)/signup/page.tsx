@@ -1,13 +1,14 @@
 import { SignupForm } from "@/components/auth/SignupForm";
+import { Card } from "@/components/ui/Card";
 
 export default function SignupPage() {
   return (
-    <div className="w-full max-w-sm rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
+    <Card className="w-full max-w-sm p-6">
       <h1 className="text-2xl font-semibold">Create your account</h1>
       <p className="mt-1 mb-6 text-sm text-gray-500">
-        Your own private prep space (PRD §7.1).
+        Start tracking your job search today.
       </p>
       <SignupForm />
-    </div>
+    </Card>
   );
 }

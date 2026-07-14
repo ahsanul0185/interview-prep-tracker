@@ -1,5 +1,8 @@
-// TODO: StageBadge — colored badge for the six fixed stages:
-// Wishlist, Applied, Online Assessment, Interview, Offer, Rejected (PRD 7.3).
-export function StageBadge() {
-  return null;
+import { Badge } from "@/components/ui/Badge";
+import { STAGE_VARIANTS } from "@/lib/constants";
+import type { ApplicationStage } from "@/types";
+
+// Colored pill for an application's stage (PRD 7.3).
+export function StageBadge({ stage }: { stage: ApplicationStage }) {
+  return <Badge variant={STAGE_VARIANTS[stage]}>{stage}</Badge>;
 }

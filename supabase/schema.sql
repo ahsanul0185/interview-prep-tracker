@@ -1,0 +1,17 @@
+-- Interview Prep Tracker — Supabase schema (PRD §9 data model)
+-- Run this in the Supabase SQL editor. TODO: implement tables + RLS policies.
+--
+-- Tables:
+--   profiles         (id, user_id, display_name)
+--   applications     (id, user_id, company, role, stage, date_applied, link, notes)
+--   interview_rounds (id, application_id, user_id, round_type, date, status, notes)
+--   dsa_topics       (id, user_id, name, status)
+--   hr_questions     (id, user_id, question, answer_notes, state)
+--   reminders        (id, user_id, title, due_date, application_id, is_done)
+--
+-- Requirements (PRD 7.2 / 7.3):
+--   - Every table carries user_id referencing auth.users(id).
+--   - Enable row-level security on every table with policies scoped to
+--     auth.uid() = user_id, so no user can read or write another user's data.
+--   - interview_rounds.application_id -> applications(id) ON DELETE CASCADE,
+--     so deleting an application removes its child interview rounds.

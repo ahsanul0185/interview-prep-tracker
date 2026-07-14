@@ -21,23 +21,23 @@ export function useApplications() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchApplications = useCallback(async () => {
-    setLoading(true);
-    setError(null);
-    const { data, error } = await supabase
-      .from("applications")
-      .select("*")
-      .order("created_at", { ascending: false });
+  useEffect(() => {
+    async function load() {
+      setLoading(true);
+      setError(null);
+      const { data, error } = await supabase
+        .from("applications")
+        .select("*")
+        .order("created_at", { ascending: false });
 
-    if (error) setError(error.message);
-    else setApplications((data as Application[]) ?? []);
-    setLoading(false);
+      if (error) setError(error.message);
+      else setApplications((data as Application[]) ?? []);
+      setLoading(false);
+    }
+
+    load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  useEffect(() => {
-    fetchApplications();
-  }, [fetchApplications]);
 
   const createApplication = useCallback(
     async (input: ApplicationInput) => {
@@ -94,7 +94,6 @@ export function useApplications() {
     applications,
     loading,
     error,
-    refetch: fetchApplications,
     createApplication,
     updateApplication,
     deleteApplication,

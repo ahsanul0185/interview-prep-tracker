@@ -11,7 +11,7 @@ This file lists the exact files/tasks per module so you can pick up where you le
 | 0 — Database schema | ✅ Done | Run `supabase/schema.sql` in your Supabase SQL editor |
 | 1 — Foundations | ✅ Done | Types, constants, utils, Modal, ConfirmDialog |
 | 2 — Applications + stage tracking | ✅ Done | Full CRUD, stage filter, detail page shell |
-| 3 — Interview rounds | ⏳ To do | |
+| 3 — Interview rounds | ✅ Done | |
 | 4 — DSA tracker | ⏳ To do | |
 | 5 — HR tracker | ⏳ To do | |
 | 6 — Reminders | ⏳ To do | |
@@ -73,30 +73,19 @@ This file lists the exact files/tasks per module so you can pick up where you le
 
 ## Module 3 — Interview rounds
 
-### Files to create/modify
+> ✅ Already implemented.
 
-- [ ] `src/hooks/useInterviewRounds.ts`
-  - fetch rounds by `application_id`
-  - `createRound(applicationId, input)`
-  - `updateRound(id, partial)`
-  - `deleteRound(id)`
-  - expose `loading`/`error`
-- [ ] `src/components/rounds/RoundStatusBadge.tsx`
-  - use `ROUND_STATUS_VARIANTS` from constants
-- [ ] `src/components/rounds/RoundForm.tsx`
-  - fields: `round_type` (Select with `ROUND_TYPES`), `date` (date input), `status` (Select with `ROUND_STATUSES`), `notes` (Textarea)
-- [ ] `src/components/rounds/RoundList.tsx`
-  - list of rounds; show type, date, status badge, notes
-  - edit/delete actions
-- [ ] `src/app/(dashboard)/applications/[id]/page.tsx`
-  - replace the dashed "Interview rounds" placeholder with real `<RoundList />`
-  - add "Add round" button that opens a Modal with `RoundForm`
+- [x] `src/hooks/useInterviewRounds.ts`
+- [x] `src/components/rounds/RoundStatusBadge.tsx`
+- [x] `src/components/rounds/RoundForm.tsx`
+- [x] `src/components/rounds/RoundList.tsx`
+- [x] `src/app/(dashboard)/applications/[id]/page.tsx` wired for rounds
 
 ### Acceptance
 
-- [ ] Can add/update/delete rounds on an application detail page.
-- [ ] Round status updates persist.
-- [ ] Deleting an application still cascades and removes its rounds (database-level).
+- [x] Can add/update/delete rounds on an application detail page.
+- [x] Round status updates persist.
+- [x] Deleting an application cascades via database FK.
 
 ---
 

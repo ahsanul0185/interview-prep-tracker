@@ -2,19 +2,62 @@
 
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import { useState } from "react";
 import { StageBadge } from "@/components/applications/StageBadge";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
+import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
+import { Modal } from "@/components/ui/Modal";
 import { Spinner } from "@/components/ui/Spinner";
+import { RoundForm } from "@/components/rounds/RoundForm";
+import { RoundList } from "@/components/rounds/RoundList";
 import { useApplication } from "@/hooks/useApplication";
+import { useInterviewRounds } from "@/hooks/useInterviewRounds";
 import { formatDate } from "@/lib/utils";
+import type { InterviewRound } from "@/types";
 
-// Application detail view (PRD 7.3) with a placeholder for interview rounds (Module 3).
+// Application detail view with interview rounds (PRD 7.3 + 7.4).
 export default function ApplicationDetailPage() {
   const { id } = useParams<{ id: string }>();
-  const { application, loading, error } = useApplication(id);
+  const { application, loading: appLoading, error: appError } = useApplication(id);
+  const {
+    rounds,
+    loading: roundsLoading,
+    error: roundsError,
+    createRound,
+    updateRound,
+    deleteRound,
+  } = useInterviewRounds(id);
 
-  if (loading) {
+  const [formOpen, setFormOpen] = useState(false);
+  const [editingRound, setEditingRound] = useState<InterviewRound | null>(null);
+  const [toDelete, setToDelete] = useState<InterviewRound | null>(null);
+  const [deleting, setDeleting] = useState(false);
+
+  function openAddRound() {
+    setEditingRound(null);
+    setFormOpen(true);
+  }
+
+  function openEditRound(round: InterviewRound) {
+    setEditingRound(round);
+    setFormOpen(true);
+  }
+
+  function closeForm() {
+    setFormOpen(false);
+    setEditingRound(null);
+  }
+
+  async function handleDeleteRound() {
+    if (!toDelete) return;
+    setDeleting(true);
+    const { error } = await deleteRound(toDelete.id);
+    setDeleting(false);
+    if (!error) setToDelete(null);
+  }
+
+  if (appLoading) {
     return (
       <div className="flex justify-center py-16">
         <Spinner size="lg" />
@@ -22,14 +65,14 @@ export default function ApplicationDetailPage() {
     );
   }
 
-  if (error || !application) {
+  if (appError || !application) {
     return (
       <div className="flex flex-col gap-4">
         <Button variant="ghost" asChild className="w-fit">
           <Link href="/applications">&larr; Back to applications</Link>
         </Button>
         <p role="alert" className="rounded-md bg-danger-bg px-3 py-2 text-sm text-danger">
-          {error ?? "Application not found."}
+          {appError ?? "Application not found."}
         </p>
       </div>
     );
@@ -37,11 +80,9 @@ export default function ApplicationDetailPage() {
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-        <Button variant="ghost" asChild className="w-fit">
-          <Link href="/applications">&larr; Back to applications</Link>
-        </Button>
-      </div>
+      <Button variant="ghost" asChild className="w-fit">
+        <Link href="/applications">&larr; Back to applications</Link>
+      </Button>
 
       <Card className="p-5">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
@@ -87,12 +128,60 @@ export default function ApplicationDetailPage() {
         </dl>
       </Card>
 
-      <section className="rounded-xl border border-dashed border-gray-300 bg-white/50 p-6 text-center">
-        <h2 className="text-sm font-semibold text-gray-700">Interview rounds</h2>
-        <p className="mt-1 text-sm text-gray-500">
-          Round tracking will be added in the next module.
-        </p>
+      <section className="flex flex-col gap-4">
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-semibold text-foreground">Interview rounds</h2>
+          <Button onClick={openAddRound}>Add round</Button>
+        </div>
+
+        {roundsError && (
+          <p role="alert" className="rounded-md bg-danger-bg px-3 py-2 text-sm text-danger">
+            {roundsError}
+          </p>
+        )}
+
+        {roundsLoading ? (
+          <div className="flex justify-center py-12">
+            <Spinner />
+          </div>
+        ) : (
+          <RoundList
+            rounds={rounds}
+            onEdit={openEditRound}
+            onDelete={setToDelete}
+            onStatusChange={(roundId, status) => updateRound(roundId, { status })}
+          />
+        )}
       </section>
+
+      <Modal
+        open={formOpen}
+        onClose={closeForm}
+        title={editingRound ? "Edit round" : "Add round"}
+      >
+        <RoundForm
+          initial={editingRound ?? undefined}
+          onCancel={closeForm}
+          onSubmit={async (input) => {
+            const result = editingRound
+              ? await updateRound(editingRound.id, input)
+              : await createRound(input);
+            if (!result.error) closeForm();
+            return result;
+          }}
+        />
+      </Modal>
+
+      <ConfirmDialog
+        open={!!toDelete}
+        title="Delete round"
+        message={`Delete the "${toDelete?.round_type}" round? This cannot be undone.`}
+        confirmLabel="Delete"
+        destructive
+        loading={deleting}
+        onConfirm={handleDeleteRound}
+        onCancel={() => setToDelete(null)}
+      />
     </div>
   );
 }

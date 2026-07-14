@@ -1,19 +1,22 @@
 "use client";
 
+import Link from "next/link";
 import { useMemo, useState } from "react";
-import { ApplicationCard } from "@/components/applications/ApplicationCard";
 import { ApplicationForm } from "@/components/applications/ApplicationForm";
+import { StageBadge } from "@/components/applications/StageBadge";
 import { StageCounts } from "@/components/applications/StageCounts";
 import { StageFilter } from "@/components/applications/StageFilter";
 import { Button } from "@/components/ui/Button";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
+import { DataTable } from "@/components/ui/DataTable";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { Modal } from "@/components/ui/Modal";
 import { Spinner } from "@/components/ui/Spinner";
 import { useApplications } from "@/hooks/useApplications";
+import { formatDate } from "@/lib/utils";
 import type { Application, ApplicationStage } from "@/types";
 
-// Applications list/grid with full CRUD (PRD 7.3) + stage filter (P1).
+// Applications list as a reusable data table with pagination and filter (PRD 7.3 + P1).
 export default function ApplicationsPage() {
   const {
     applications,
@@ -30,7 +33,7 @@ export default function ApplicationsPage() {
   const [toDelete, setToDelete] = useState<Application | null>(null);
   const [deleting, setDeleting] = useState(false);
 
-  const visible = useMemo(
+  const stageFiltered = useMemo(
     () => (filter === "all" ? applications : applications.filter((a) => a.stage === filter)),
     [applications, filter]
   );
@@ -89,25 +92,62 @@ export default function ApplicationsPage() {
           action={<Button onClick={openAdd}>Add application</Button>}
         />
       ) : (
-        <>
-          <div className="flex justify-end">
-            <StageFilter value={filter} onChange={setFilter} />
-          </div>
-          {visible.length === 0 ? (
-            <EmptyState title="Nothing in this stage" description="Try a different filter." />
-          ) : (
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {visible.map((application) => (
-                <ApplicationCard
-                  key={application.id}
-                  application={application}
-                  onEdit={openEdit}
-                  onDelete={setToDelete}
-                />
-              ))}
-            </div>
-          )}
-        </>
+        <DataTable
+          data={stageFiltered}
+          columns={[
+            {
+              header: "Company",
+              accessor: "company",
+              cell: (row) => (
+                <Link
+                  href={`/applications/${row.id}`}
+                  className="font-medium text-foreground hover:text-primary-700 hover:underline"
+                >
+                  {row.company}
+                </Link>
+              ),
+            },
+            { header: "Role", accessor: "role" },
+            {
+              header: "Stage",
+              accessor: "stage",
+              cell: (row) => <StageBadge stage={row.stage} />,
+            },
+            {
+              header: "Date applied",
+              accessor: "date_applied",
+              cell: (row) => (row.date_applied ? formatDate(row.date_applied) : "—"),
+            },
+            {
+              header: "Notes",
+              accessor: "notes",
+              cell: (row) => (
+                <span className="block max-w-xs truncate text-gray-600">
+                  {row.notes || "—"}
+                </span>
+              ),
+            },
+            {
+              header: "Actions",
+              cell: (row) => (
+                <div className="flex items-center gap-2">
+                  <Button variant="ghost" size="sm" onClick={() => openEdit(row)}>
+                    Edit
+                  </Button>
+                  <Button variant="ghost" size="sm" onClick={() => setToDelete(row)}>
+                    Delete
+                  </Button>
+                </div>
+              ),
+            },
+          ]}
+          filterPlaceholder="Search company, role, notes…"
+          filterKeys={["company", "role", "notes"]}
+          emptyTitle="No applications match"
+          emptyDescription="Try a different search or stage filter."
+        >
+          <StageFilter value={filter} onChange={setFilter} />
+        </DataTable>
       )}
 
       <Modal

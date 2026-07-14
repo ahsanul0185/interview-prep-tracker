@@ -24,8 +24,7 @@ type DataTableProps<T extends { id: string }> = {
   children?: ReactNode;
 };
 
-// Generic sortable-style table with client-side text filter and pagination.
-// Designed to be reusable across applications, DSA topics, HR questions, and reminders.
+// Soft data table with background, border, and small rounded corners.
 export function DataTable<T extends { id: string }>({
   data,
   columns,
@@ -66,7 +65,6 @@ export function DataTable<T extends { id: string }>({
     [filtered, page, pageSize]
   );
 
-  // Reset to page 1 when filter changes to avoid empty pages.
   function handleFilterChange(value: string) {
     setFilterText(value);
     setPage(1);
@@ -79,7 +77,7 @@ export function DataTable<T extends { id: string }>({
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-5">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div className="w-full max-w-xs">
           <Input
@@ -101,11 +99,11 @@ export function DataTable<T extends { id: string }>({
           <Card className="overflow-x-auto">
             <table className="w-full border-collapse text-sm">
               <thead>
-                <tr className="border-b border-gray-200 bg-gray-50 text-left">
+                <tr className="border-b border-gray-100 text-left">
                   {columns.map((column, idx) => (
                     <th
                       key={idx}
-                      className={`px-4 py-3 font-medium text-gray-700 ${column.className ?? ""}`}
+                      className={`px-4 py-3 text-xs font-medium uppercase tracking-wider text-gray-500 ${column.className ?? ""}`}
                     >
                       {column.header}
                     </th>
@@ -116,7 +114,7 @@ export function DataTable<T extends { id: string }>({
                 {visible.map((row) => (
                   <tr
                     key={row.id}
-                    className="border-b border-gray-100 last:border-b-0 hover:bg-gray-50/60"
+                    className="border-b border-gray-50 last:border-b-0 transition-colors hover:bg-gray-50/50"
                   >
                     {columns.map((column, idx) => (
                       <td
@@ -133,10 +131,9 @@ export function DataTable<T extends { id: string }>({
           </Card>
 
           <div className="flex flex-col items-center justify-between gap-3 sm:flex-row">
-            <p className="text-sm text-gray-500">
-              Showing {filtered.length === 0 ? 0 : (page - 1) * pageSize + 1}–
+            <p className="text-sm text-gray-400">
+              {filtered.length === 0 ? 0 : (page - 1) * pageSize + 1}–
               {Math.min(page * pageSize, filtered.length)} of {filtered.length}
-              {filterText ? " filtered" : ""}
             </p>
             <div className="flex items-center gap-1">
               <Button

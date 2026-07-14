@@ -10,23 +10,16 @@ type ModalProps = {
   className?: string;
 };
 
-// Accessible dialog with smooth enter/exit animation.
-// Manages its own mount/unmount timing so the exit transition can play before removal.
+// Accessible dialog with smooth enter/exit animation and soft modern styling.
 export function Modal({ open, onClose, title, children, className = "" }: ModalProps) {
   const [isMounted, setIsMounted] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
 
   // Coordinate mount/unmount with the CSS transition duration.
-  // useLayoutEffect is used so the initial hidden state is committed before the
-  // browser paints, ensuring the enter transition plays reliably.
-  // Animating a component in/out inherently requires state transitions in an
-  // effect; this is intentional orchestration, not a data fetch.
   /* eslint-disable react-hooks/set-state-in-effect */
   useLayoutEffect(() => {
     if (open) {
       setIsMounted(true);
-      // Start the enter animation on the next frame so the browser sees the
-      // initial opacity-0 / scale-95 state before transitioning to visible.
       const raf = requestAnimationFrame(() => setIsVisible(true));
       return () => cancelAnimationFrame(raf);
     } else {
@@ -58,7 +51,7 @@ export function Modal({ open, onClose, title, children, className = "" }: ModalP
 
   return (
     <div
-      className={`fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 transition-opacity duration-200 ${
+      className={`fixed inset-0 z-50 flex items-center justify-center bg-black/30 p-4 transition-opacity duration-200 ${
         isVisible ? "opacity-100" : "opacity-0"
       }`}
       onMouseDown={onClose}
@@ -67,22 +60,20 @@ export function Modal({ open, onClose, title, children, className = "" }: ModalP
         role="dialog"
         aria-modal="true"
         aria-label={title}
-        className={`w-full max-w-lg transform rounded-xl bg-surface p-6 shadow-xl transition-all duration-200 ${
+        className={`w-full max-w-lg transform rounded-lg border border-gray-200 bg-surface p-6 transition-all duration-200 ${
           isVisible ? "scale-100 opacity-100" : "scale-95 opacity-0"
         } ${className}`}
         onMouseDown={(e) => e.stopPropagation()}
       >
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-foreground">{title}</h2>
+        <div className="mb-6 flex items-center justify-between border-b border-gray-100 pb-3">
+          <h2 className="text-base font-medium text-foreground">{title}</h2>
           <button
             type="button"
             onClick={onClose}
             aria-label="Close"
-            className="rounded-md p-1 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-700"
+            className="text-sm text-gray-400 transition-colors hover:text-gray-700"
           >
-            <span aria-hidden className="text-xl leading-none">
-              &times;
-            </span>
+            Close
           </button>
         </div>
         {children}

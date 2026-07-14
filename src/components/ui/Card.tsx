@@ -1,6 +1,6 @@
 import type { HTMLAttributes } from "react";
 
-// Generic content container used by application/reminder cards and panels.
+// Soft container with small rounded corners and a subtle border.
 export function Card({
   className = "",
   children,
@@ -8,7 +8,7 @@ export function Card({
 }: HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={`rounded-xl border border-gray-200 bg-surface shadow-sm ${className}`}
+      className={`rounded-lg border border-gray-200 bg-surface ${className}`}
       {...props}
     >
       {children}

@@ -39,10 +39,7 @@ export function LoginForm() {
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
       {error && (
-        <p
-          role="alert"
-          className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-600"
-        >
+        <p role="alert" className="text-sm text-danger">
           {error}
         </p>
       )}
@@ -67,9 +64,9 @@ export function LoginForm() {
       <Button type="submit" disabled={loading}>
         {loading ? "Logging in…" : "Log in"}
       </Button>
-      <p className="text-center text-sm text-gray-500">
+      <p className="text-center text-sm text-gray-400">
         Don&apos;t have an account?{" "}
-        <Link href="/signup" className="font-medium text-gray-900 underline">
+        <Link href="/signup" className="text-foreground underline underline-offset-2">
           Sign up
         </Link>
       </p>

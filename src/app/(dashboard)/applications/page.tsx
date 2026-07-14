@@ -65,8 +65,8 @@ export default function ApplicationsPage() {
     <div className="flex flex-col gap-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-semibold text-foreground">Applications</h1>
-          <p className="mt-1 text-sm text-gray-500">
+          <h1 className="text-2xl font-light tracking-tight text-foreground">Applications</h1>
+          <p className="mt-1 text-sm text-gray-400">
             Track every role from wishlist to offer.
           </p>
         </div>
@@ -76,7 +76,7 @@ export default function ApplicationsPage() {
       {!loading && applications.length > 0 && <StageCounts applications={applications} />}
 
       {error && (
-        <p role="alert" className="rounded-md bg-danger-bg px-3 py-2 text-sm text-danger">
+        <p role="alert" className="text-sm text-danger">
           {error}
         </p>
       )}
@@ -122,7 +122,7 @@ export default function ApplicationsPage() {
               header: "Notes",
               accessor: "notes",
               cell: (row) => (
-                <span className="block max-w-xs truncate text-gray-600">
+                <span className="block max-w-xs truncate text-gray-500">
                   {row.notes || "—"}
                 </span>
               ),

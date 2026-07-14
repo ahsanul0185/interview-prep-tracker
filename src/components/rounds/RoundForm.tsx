@@ -56,7 +56,7 @@ export function RoundForm({ initial, onSubmit, onCancel }: RoundFormProps) {
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
       {error && (
-        <p role="alert" className="rounded-md bg-danger-bg px-3 py-2 text-sm text-danger">
+        <p role="alert" className="text-sm text-danger">
           {error}
         </p>
       )}

@@ -1,5 +1,6 @@
 "use client";
 
+import { Select } from "@/components/ui/Select";
 import { APPLICATION_STAGES } from "@/lib/constants";
 import type { ApplicationStage } from "@/types";
 
@@ -8,26 +9,21 @@ type StageFilterProps = {
   onChange: (value: ApplicationStage | "all") => void;
 };
 
-// Filter applications by stage (PRD P1 — search/filter).
+// Stage filter using the soft Select primitive.
 export function StageFilter({ value, onChange }: StageFilterProps) {
   return (
-    <div className="flex items-center gap-2">
-      <label htmlFor="stage-filter" className="text-sm font-medium text-gray-600">
-        Stage
-      </label>
-      <select
-        id="stage-filter"
-        value={value}
-        onChange={(e) => onChange(e.target.value as ApplicationStage | "all")}
-        className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm outline-none focus:border-primary-600 focus:ring-2 focus:ring-primary-600/20"
-      >
-        <option value="all">All stages</option>
-        {APPLICATION_STAGES.map((stage) => (
-          <option key={stage} value={stage}>
-            {stage}
-          </option>
-        ))}
-      </select>
-    </div>
+    <Select
+      label="Stage"
+      name="stage-filter"
+      value={value}
+      onChange={(e) => onChange(e.target.value as ApplicationStage | "all")}
+    >
+      <option value="all">All stages</option>
+      {APPLICATION_STAGES.map((stage) => (
+        <option key={stage} value={stage}>
+          {stage}
+        </option>
+      ))}
+    </Select>
   );
 }

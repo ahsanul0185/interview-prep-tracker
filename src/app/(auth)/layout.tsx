@@ -7,8 +7,11 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-1 flex-col items-center justify-center gap-6 p-4">
-      <Link href="/" className="text-xl font-bold text-primary-700">
+    <div className="flex flex-1 flex-col items-center justify-center gap-8 p-5">
+      <Link
+        href="/"
+        className="text-sm font-semibold uppercase tracking-widest text-foreground"
+      >
         Interview Prep Tracker
       </Link>
       {children}

@@ -1,7 +1,8 @@
+import { Card } from "@/components/ui/Card";
 import { APPLICATION_STAGES, STAGE_VARIANTS } from "@/lib/constants";
 import type { Application } from "@/types";
 
-// Per-stage counts (PRD 7.3) — shown on the dashboard and applications page.
+// Per-stage counts shown as soft cards (PRD 7.3).
 export function StageCounts({ applications }: { applications: Application[] }) {
   const counts = APPLICATION_STAGES.map((stage) => ({
     stage,
@@ -11,19 +12,14 @@ export function StageCounts({ applications }: { applications: Application[] }) {
   return (
     <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
       {counts.map(({ stage, count }) => (
-        <div
-          key={stage}
-          className="rounded-xl border border-gray-200 bg-surface p-3 text-center shadow-sm"
-        >
+        <Card key={stage} className="p-3 text-center">
           <p className="text-2xl font-semibold text-foreground">{count}</p>
           <span
-            className={`mt-1 inline-block rounded-full px-2 py-0.5 text-xs font-medium ${
-              VARIANT_TEXT[STAGE_VARIANTS[stage]]
-            }`}
+            className={`mt-1 inline-block rounded-md px-1.5 py-0.5 text-xs font-medium ${VARIANT_TEXT[STAGE_VARIANTS[stage]]}`}
           >
             {stage}
           </span>
-        </div>
+        </Card>
       ))}
     </div>
   );

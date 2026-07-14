@@ -1,11 +1,11 @@
 import type { NextRequest } from "next/server";
+import { updateSession } from "@/lib/supabase/proxy";
 
 // Next.js 16 request interceptor (formerly middleware.ts).
-// TODO (PRD 7.1): refresh the Supabase session and protect the (dashboard)
-// route group — redirect unauthenticated users to /login.
-// Session-refresh helper lives in src/lib/supabase/proxy.ts.
-export function proxy() {
-  // TODO
+// Refreshes the Supabase session on every request and protects non-public
+// routes (PRD 7.1) — see src/lib/supabase/proxy.ts.
+export async function proxy(request: NextRequest) {
+  return await updateSession(request);
 }
 
 export const config = {

@@ -19,8 +19,13 @@ npm install
 
 # 2. Configure environment
 cp .env.local.example .env.local
-#    → fill in NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY
-#      from https://supabase.com/dashboard/project/_/settings/api
+#    → fill in NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+#      from https://supabase.com/dashboard/project/_/settings/api-keys
+#    (use the publishable key — never the secret key)
+#
+#    Email verification is not used in this app — turn off "Confirm email" at
+#    https://supabase.com/dashboard/project/_/auth/providers (Email provider)
+#    so new users are signed in immediately after signup.
 
 # 3. Create the database schema
 #    → run supabase/schema.sql in the Supabase SQL editor (once implemented)
@@ -35,7 +40,7 @@ Open http://localhost:3000.
 
 ```
 src/
-├── proxy.ts                     # Next 16 request interceptor: session refresh + route protection (TODO)
+├── proxy.ts                     # Next 16 request interceptor: session refresh + route protection
 ├── app/
 │   ├── layout.tsx               # Root layout + metadata
 │   ├── globals.css              # Tailwind 4 entry
@@ -72,9 +77,10 @@ supabase/
 └── schema.sql                   # Tables + RLS policies (PRD §9)
 ```
 
-Feature files currently contain TODO stubs — implementation follows the PRD
-milestones (M1 setup → M2 core CRUD → M3 prep modules → M4 reminders/polish →
-M5 delivery).
+**Implemented (M1):** email/password auth, session persistence, protected
+routes, login/logout, dashboard shell. Remaining feature files contain TODO
+stubs following the PRD milestones (M2 core CRUD → M3 prep modules → M4
+reminders/polish → M5 delivery).
 
 ## Scripts
 

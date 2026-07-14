@@ -14,10 +14,10 @@ Postgres. Product spec: [`requirement/PRD.md`](requirement/PRD.md).
 ## Design
 
 - **Font:** Outfit (`next/font/google`)
-- **Primary:** `#00896f` teal, full 50–950 shade scale → `primary-*` utilities (brand color sits at `primary-600`)
-- **Semantic:** `success` / `warning` / `danger` / `info` with matching `*-bg` tints — for statuses and badges
-- **Surfaces:** `background` `#f5f7f6`, `surface` white, `foreground` `#1a1f1d`
-- Tokens are defined in `src/app/globals.css` via Tailwind 4 `@theme`; reusable primitives live in `src/components/ui/` (Button, Input, Textarea, Select, Badge, Card, Spinner, EmptyState)
+- **Primary:** `#00917a` teal, full 50–950 shade scale → `primary-*` utilities
+- **Style:** soft modern — small rounded corners, subtle 1px borders, light backgrounds, minimal shadows
+- **Surfaces:** `background` `#fafafa`, `surface` white, `foreground` `#171717`
+- Tokens are defined in `src/app/globals.css` via Tailwind 4 `@theme`; reusable primitives live in `src/components/ui/` (Button, Input, Textarea, Select, Badge, Card, Modal, Spinner, EmptyState, DataTable)
 
 ## Getting started
 
@@ -36,7 +36,7 @@ cp .env.local.example .env.local
 #    so new users are signed in immediately after signup.
 
 # 3. Create the database schema
-#    → run supabase/schema.sql in the Supabase SQL editor (once implemented)
+#    → open supabase/schema.sql and run it in the Supabase SQL editor
 
 # 4. Run the dev server
 npm run dev
@@ -51,26 +51,26 @@ src/
 ├── proxy.ts                     # Next 16 request interceptor: session refresh + route protection
 ├── app/
 │   ├── layout.tsx               # Root layout + metadata
-│   ├── globals.css              # Tailwind 4 entry
-│   ├── page.tsx                 # / — entry point (TODO: redirect by auth state)
+│   ├── globals.css              # Tailwind 4 entry + design tokens
+│   ├── page.tsx                 # / — redirects by auth state
 │   ├── (auth)/
 │   │   ├── layout.tsx           # Centered auth shell
 │   │   ├── login/page.tsx       # /login
 │   │   └── signup/page.tsx      # /signup
 │   └── (dashboard)/             # Protected routes (PRD 7.1)
 │       ├── layout.tsx           # App shell (sidebar/mobile nav)
-│       ├── dashboard/page.tsx   # /dashboard — overview: stage counts, reminders, DSA progress
+│       ├── dashboard/page.tsx   # /dashboard — overview widgets
 │       ├── applications/
-│       │   ├── page.tsx         # /applications — list/grid, CRUD
+│       │   ├── page.tsx         # /applications — data table with filter + pagination
 │       │   └── [id]/page.tsx    # /applications/:id — detail + interview rounds
-│       ├── dsa/page.tsx         # /dsa — DSA topic tracker
+│       ├── dsa/page.tsx         # /dsa — DSA topic tracker + progress
 │       ├── hr/page.tsx          # /hr — HR question tracker
 │       └── reminders/page.tsx   # /reminders — reminders with overdue flags
 ├── components/
-│   ├── ui/                      # Button, Input, Modal, Card, Badge, …
+│   ├── ui/                      # Button, Input, Modal, Card, Badge, DataTable, …
 │   ├── layout/                  # Sidebar, MobileNav, UserMenu
 │   ├── auth/                    # LoginForm, SignupForm
-│   ├── applications/            # ApplicationCard/Form, StageBadge/Counts/Filter
+│   ├── applications/            # ApplicationForm, StageBadge/Counts/Filter
 │   ├── rounds/                  # Interview round components
 │   ├── dsa/                     # DSA tracker components
 │   ├── hr/                      # HR tracker components
@@ -82,14 +82,47 @@ src/
 │   └── utils.ts                 # cn(), date helpers
 └── types/                       # Domain types (PRD §9 data model)
 supabase/
-└── schema.sql                   # Tables + RLS policies (PRD §9)
+└── schema.sql                   # Tables + RLS policies + profile trigger
 ```
 
-**Implemented (M1):** email/password auth, session persistence, protected
-routes, login/logout, dashboard shell with sidebar (desktop) + bottom tab bar
-(mobile), design tokens, and core UI primitives. Remaining feature files
-contain TODO stubs following the PRD milestones (M2 core CRUD → M3 prep
-modules → M4 reminders/polish → M5 delivery).
+## Features
+
+All MVP (P0) features from the PRD are implemented:
+
+- Email/password auth with session persistence and protected routes
+- Job applications with full CRUD, stage tracking, and stage counts
+- Interview rounds per application with status tracking
+- DSA topic tracker with three-state progress and confidence summary
+- HR question tracker with prepared/needs-work state
+- Reminders with overdue and due-today flags + done toggle
+- Responsive layout (sidebar on desktop, bottom tab bar on mobile)
+- Reusable `DataTable` with client-side filter and pagination
+
+## Deploy
+
+```bash
+# 1. Verify quality
+npm run lint
+npm run build
+
+# 2. Create a production build
+#    → set the same Supabase env vars in your host (Vercel/Netlify)
+#    → ensure the schema.sql has been run on the production Supabase project
+
+# 3. Push/deploy via your host's CLI or Git integration
+```
+
+## Final QC checklist
+
+Before calling the project done, run through these manually:
+
+- [ ] Sign up a fresh account → a `profiles` row is created automatically.
+- [ ] Create two accounts and confirm neither can see the other's data (RLS test).
+- [ ] Add an application, edit it, delete it — data persists after logout/re-login.
+- [ ] Add interview rounds, DSA topics, HR questions, reminders — all persist.
+- [ ] Check overdue/due-today reminder flags.
+- [ ] Resize the browser to 320px width — no horizontal scroll, all tap targets reachable.
+- [ ] `npm run lint` and `npm run build` both pass.
 
 ## Scripts
 
@@ -97,5 +130,5 @@ modules → M4 reminders/polish → M5 delivery).
 |---|---|
 | `npm run dev` | Start dev server |
 | `npm run build` | Production build |
-| `npm start` | Serve production build |
+| `npm run start` | Serve production build |
 | `npm run lint` | ESLint (flat config) |

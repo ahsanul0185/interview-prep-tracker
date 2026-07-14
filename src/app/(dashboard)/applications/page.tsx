@@ -65,8 +65,8 @@ export default function ApplicationsPage() {
     <div className="flex flex-col gap-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-light tracking-tight text-foreground">Applications</h1>
-          <p className="mt-1 text-sm text-gray-400">
+          <h1 className="text-2xl font-semibold text-foreground">Applications</h1>
+          <p className="mt-1 text-sm text-gray-500">
             Track every role from wishlist to offer.
           </p>
         </div>

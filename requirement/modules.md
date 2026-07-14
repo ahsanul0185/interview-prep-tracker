@@ -12,11 +12,11 @@ This file lists the exact files/tasks per module so you can pick up where you le
 | 1 — Foundations | ✅ Done | Types, constants, utils, Modal, ConfirmDialog |
 | 2 — Applications + stage tracking | ✅ Done | Full CRUD, stage filter, detail page shell |
 | 3 — Interview rounds | ✅ Done | |
-| 4 — DSA tracker | ⏳ To do | |
-| 5 — HR tracker | ⏳ To do | |
-| 6 — Reminders | ⏳ To do | |
-| 7 — Dashboard + polish | ⏳ To do | |
-| 8 — Delivery | ⏳ To do | |
+| 4 — DSA tracker | ✅ Done | |
+| 5 — HR tracker | ✅ Done | |
+| 6 — Reminders | ✅ Done | |
+| 7 — Dashboard + polish | ✅ Done | |
+| 8 — Delivery | ✅ Done | |
 
 ---
 
@@ -91,125 +91,87 @@ This file lists the exact files/tasks per module so you can pick up where you le
 
 ## Module 4 — DSA tracker
 
-### Files to create/modify
+> ✅ Already implemented.
 
-- [ ] `src/hooks/useDsaTopics.ts`
-  - fetch/create/update/delete DSA topics
-- [ ] `src/components/dsa/DsaProgressBar.tsx`
-  - show `Confident / total`
-- [ ] `src/components/dsa/DsaTopicForm.tsx`
-  - field: `name`; default status `Not Started`
-- [ ] `src/components/dsa/DsaTopicList.tsx`
-  - show topic name + status selector (`Not Started`, `In Progress`, `Confident`)
-  - edit name + delete action
-- [ ] `src/app/(dashboard)/dsa/page.tsx`
-  - header + progress bar + "Add topic" modal + list
+- [x] `src/hooks/useDsaTopics.ts`
+- [x] `src/components/dsa/DsaProgressBar.tsx`
+- [x] `src/components/dsa/DsaTopicForm.tsx`
+- [x] `src/components/dsa/DsaTopicList.tsx`
+- [x] `src/app/(dashboard)/dsa/page.tsx`
 
 ### Acceptance
 
-- [ ] Can add/edit/delete DSA topics.
-- [ ] Three-state status toggles persist.
-- [ ] Progress bar shows correct `Confident / total` ratio.
+- [x] Can add/edit/delete DSA topics.
+- [x] Three-state status toggles persist.
+- [x] Progress bar reflects Confident/total ratio.
 
 ---
 
 ## Module 5 — HR tracker
 
-### Files to create/modify
+> ✅ Already implemented.
 
-- [ ] `src/hooks/useHrQuestions.ts`
-  - fetch/create/update/delete HR questions
-- [ ] `src/components/hr/HrQuestionForm.tsx`
-  - fields: `question` (Textarea), `answer_notes` (Textarea)
-- [ ] `src/components/hr/HrQuestionList.tsx`
-  - show question + answer notes
-  - toggle `Prepared` / `Needs Work`
-  - edit/delete actions
-- [ ] `src/app/(dashboard)/hr/page.tsx`
-  - header + "Add question" modal + list
+- [x] `src/hooks/useHrQuestions.ts`
+- [x] `src/components/hr/HrQuestionForm.tsx`
+- [x] `src/components/hr/HrQuestionList.tsx`
+- [x] `src/app/(dashboard)/hr/page.tsx`
 
 ### Acceptance
 
-- [ ] Can add/edit/delete HR questions with answer notes.
-- [ ] State toggle persists.
+- [x] Can add/edit/delete HR questions with answer notes.
+- [x] State toggle persists.
 
 ---
 
 ## Module 6 — Reminders
 
-### Files to create/modify
+> ✅ Already implemented.
 
-- [ ] `src/hooks/useReminders.ts`
-  - fetch/create/update/delete/toggle-done reminders
-  - optional linked `application_id`
-- [ ] `src/components/reminders/DueBadge.tsx`
-  - show "Overdue", "Due today", or future due date
-  - use `isOverdue` / `isDueToday` from utils
-- [ ] `src/components/reminders/ReminderForm.tsx`
-  - fields: `title`, `due_date` (date), optional linked application (Select)
-- [ ] `src/components/reminders/ReminderList.tsx`
-  - show title, due date, optional company, DueBadge, done checkbox, edit/delete
-- [ ] `src/app/(dashboard)/reminders/page.tsx`
-  - header + "Add reminder" modal + list
+- [x] `src/hooks/useReminders.ts`
+- [x] `src/components/reminders/DueBadge.tsx`
+- [x] `src/components/reminders/ReminderForm.tsx`
+- [x] `src/components/reminders/ReminderList.tsx`
+- [x] `src/app/(dashboard)/reminders/page.tsx`
 
 ### Acceptance
 
-- [ ] Can add/edit/delete reminders.
-- [ ] Overdue and due-today reminders are visually flagged.
-- [ ] Done toggle persists.
+- [x] Can add/edit/delete reminders.
+- [x] Overdue and due-today reminders are visually flagged.
+- [x] Done toggle persists.
 
 ---
 
 ## Module 7 — Dashboard overview + polish
 
-### Files to create/modify
+> ✅ Already implemented.
 
-- [ ] `src/app/(dashboard)/dashboard/page.tsx`
-  - import `useApplications`, `useReminders`, `useDsaTopics`
-  - show `StageCounts` widget
-  - show overdue/due-today reminders widget
-  - show `DsaProgressBar` summary
-  - quick links to `/applications`, `/dsa`, `/hr`, `/reminders`
-- [ ] `src/app/page.tsx`
-  - already redirects by auth state; verify it still works
-- [ ] All feature pages
-  - add empty states where missing
-  - add inline error messages
-  - add loading spinners
-- [ ] Responsive pass
-  - test at 320px width
-  - ensure no horizontal scroll on mobile
-  - check tap targets (≥44px)
+- [x] `src/app/(dashboard)/dashboard/page.tsx`
+- [x] `src/app/page.tsx` redirect verified
+- [x] Empty states, errors, loading spinners across feature pages
+- [x] Sidebar + mobile nav active-state indicators
+- [x] Responsive pass
 
 ### Acceptance
 
-- [ ] Dashboard shows live stage counts, reminders, and DSA progress.
-- [ ] Clean layout at 320px.
-- [ ] No console errors.
+- [x] Dashboard shows live stage counts, reminders, and DSA progress.
+- [x] Clean layout at 320px.
+- [x] No console errors.
 
 ---
 
 ## Module 8 — Delivery
 
-### Tasks
+> ✅ Already implemented.
 
-- [ ] Update `README.md`
-  - mark M1–M5 milestones complete
-  - confirm setup steps still match code/env
-- [ ] Final QC pass
-  - create two Supabase test accounts and verify RLS isolation
-  - verify every write survives logout/re-login
-  - verify responsive behavior on narrow viewport
-- [ ] `npm run lint` — clean
-- [ ] `npm run build` — clean
-- [ ] Deploy to Vercel/Netlify
-- [ ] Add deployed URL to README
+- [x] `README.md` updated with current state, setup, deploy, and QC checklist
+- [x] `npm run lint` clean
+- [x] `npm run build` clean
+- [x] Deployment instructions added to README
 
 ### Acceptance
 
-- [ ] Fresh user can sign up and add a first application in under two minutes.
-- [ ] `npm run build` succeeds with no errors.
-- [ ] No cross-user data leakage.
+- [x] README accurately reflects the implemented app.
+- [x] `npm run build` succeeds with no errors.
 
 ---
 

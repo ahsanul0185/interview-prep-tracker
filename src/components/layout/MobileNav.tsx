@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { NAV_ITEMS, isNavActive } from "./navItems";
 
-// Mobile bottom tab bar — primary nav on small screens (usable at 320px, PRD §8).
+// Mobile bottom tab bar with active top-border indicator.
 export function MobileNav() {
   const pathname = usePathname();
 
@@ -16,10 +16,15 @@ export function MobileNav() {
           <Link
             key={item.href}
             href={item.href}
-            className={`flex flex-1 items-center justify-center px-1 py-2.5 text-center text-[11px] leading-tight ${
-              active ? "font-medium text-primary-700" : "text-gray-500"
+            className={`relative flex flex-1 items-center justify-center px-1 py-2.5 text-center text-[11px] leading-tight transition-colors ${
+              active
+                ? "font-medium text-primary-700"
+                : "text-gray-500"
             }`}
           >
+            {active && (
+              <span className="absolute inset-x-2 top-0 h-0.5 rounded-b bg-primary-600" />
+            )}
             {item.label}
           </Link>
         );
